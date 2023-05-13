@@ -1,3 +1,4 @@
+import { converter } from '@/utils/converter';
 import axios from 'axios';
 import { Inter } from 'next/font/google'
 import { useState } from 'react';
@@ -9,6 +10,7 @@ export default function Home () {
   const [currentCity, setCurrentCity] = useState({
     city: "", weather: "", pressure: "", humidity: "", wind: "", date: "", temp_f: "", wind_mile: ""
   });
+  const [weatherArrayForecast, setWeatherArrayForecast] = useState([]);
   const changeHandler = (e) => {
     setInputVal(e.target.value)
   }
@@ -29,6 +31,8 @@ export default function Home () {
         temp:weatherData.current.temp_c,
         wind_mile: weatherData.current.wind_mph
       })
+      setWeatherArrayForecast(weatherData.forecast.forecastday)
+      console.log(weatherArrayForecast);
     } catch (error) {
       console.log("Error occurred when fetching weather data ",error.message)
     }
@@ -58,6 +62,26 @@ export default function Home () {
         <h3 className='text-sm my-2'>Date:  <span className='font-bold m-2'>{ currentCity.date }</span></h3>
 
       </div>
+      <div className='m-6 font-bold'>
+       10 Days Weather forecast
+      </div>
+      <div className="grid sm:grid-cols-3  sm-m-4 grid-col-1 gap-4 p-2">
+        { weatherArrayForecast.map((value, index) => {
+          if (index > 0) {
+            return (
+              <div key={index} className='bg-orange-100 rounded-md  shadow-md p-6'>
+                <h4>Day:<span className='font-bold m-2'>{ converter(weatherArrayForecast[index].date) }</span>  </h4>
+                <h4>Weather <span className='font-bold m-2'>{ value.day.condition.text}</span></h4>
+                <h4>Min<span className='font-bold m-2'>{ value.day.mintemp_c }celcius</span></h4>
+                <h4>Max <span  className='font-bold m-2'>{ value.day.maxtemp_c }celcius</span></h4>
+              </div>
+            )
+          }
+
+        }
+        
+          )}
+        </div>
     </div>
   )
 }
