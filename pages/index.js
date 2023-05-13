@@ -6,6 +6,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home () {
   const [inputVal, setInputVal] = useState("");
+  const [currentCity, setCurrentCity] = useState({
+    city: "", weather: "", pressure: "", humidity: "", wind: "", date: "", temp_f: "", wind_mile: ""
+  });
   const changeHandler = (e) => {
     setInputVal(e.target.value)
   }
@@ -14,7 +17,18 @@ export default function Home () {
       const {data} = await axios.get(`/api/weatherAPI?city=${inputVal}`);
       //deconstruct the value from data 
       const { weatherData } = data;
-      console.log("data:",weatherData)
+      setCurrentCity({
+        ...currentCity,
+        city: weatherData.location.name,
+        weather: weatherData.current.condition.text,
+        pressure: weatherData.current.pressure_mb,
+        humidity: weatherData.current.humidity,
+        wind: weatherData.current.wind_kph,
+        date: weatherData.current.last_updated,
+        temp_f: weatherData.current.temp_f,
+        temp:weatherData.current.temp_c,
+        wind_mile: weatherData.current.wind_mph
+      })
     } catch (error) {
       console.log("Error occurred when fetching weather data ",error.message)
     }
@@ -36,12 +50,12 @@ export default function Home () {
         </button>
       </div>
       <div className="bg-amber-50 p-10">
-       <h1 className='text-x1'> Your city: <span className='font-bold m-1'></span></h1>
-      <h3 className='text-sm my-2'>Weather:  <span className='font-bold m-1'></span></h3>
-        <h3 className='text-sm my-2'>Temperature:  </h3>
-        <h3 className='text-sm my-2'>Humidity:  <span className='font-bold m-1'></span></h3>
-        <h3 className='text-sm my-2'>Wind Speed: </h3>
-        <h3 className='text-sm my-2'>Date:  <span className='font-bold m-1'></span></h3>
+        <h1 className='text-x1'> Your city: <span className='font-bold m-2'>{currentCity.city }</span></h1>
+        <h3 className='text-sm my-2'>Weather:  <span className='font-bold m-2'>{ currentCity.weather}</span></h3>
+        <h3 className='text-sm my-2'>Temperature:<span className='font-bold m-2'>{currentCity.temp} </span> </h3>
+        <h3 className='text-sm my-2'>Humidity:  <span className='font-bold m-2'>{ currentCity.humidity}</span></h3>
+        <h3 className='text-sm my-2'>Wind Speed: <span className='font-bold m-2'>{ currentCity.wind }</span></h3>
+        <h3 className='text-sm my-2'>Date:  <span className='font-bold m-2'>{ currentCity.date }</span></h3>
 
       </div>
     </div>
