@@ -19,6 +19,12 @@ export default function Home() {
         </button>
       </div>
       <div className="bg-amber-50 p-10">
+       <h1 className='text-x1'> Your city: <span className='font-bold m-1'></span></h1>
+      <h3 className='text-sm my-2'>Weather:  <span className='font-bold m-1'></span></h3>
+        <h3 className='text-sm my-2'>Temperature:  </h3>
+        <h3 className='text-sm my-2'>Humidity:  <span className='font-bold m-1'></span></h3>
+        <h3 className='text-sm my-2'>Wind Speed: </h3>
+        <h3 className='text-sm my-2'>Date:  <span className='font-bold m-1'></span></h3>
 
       </div>
     </div>
